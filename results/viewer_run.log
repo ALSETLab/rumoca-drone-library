@@ -1,0 +1,18 @@
+rumoca sim
+  Model: DroneLibrary.Tests.simpleHoverTest
+  Solver: auto
+  HTTP:  http://localhost:8090
+  WS:   ws://localhost:8091
+  Scene: custom
+  Mode:   standalone (no external interface)
+  Compiling model...
+  Inputs: []
+  Mode: standalone (no UDP/codec)
+[input] Raw mode enabled
+  WebSocket: ws://0.0.0.0:8091
+  Pacing: realtime
+
+Ready. Simulation running.
+  Open http://localhost:8090 in a browser.
+rumoca-viewer-ready http://127.0.0.1:8090/
+[sim] t=0.0s frame=0 pkts=0            

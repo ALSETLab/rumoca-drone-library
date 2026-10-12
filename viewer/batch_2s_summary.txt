@@ -1,0 +1,9 @@
+Batch run (CLI): rumoca sim simpleHoverTest.mo --model DroneLibrary.Tests.simpleHoverTest --t-end 2 --dt 0.01 --source-root msl400_triage_A
+wall time compile+2 s simulation: 1m51s (Bash time); simDetails={'actual': {'t_start': 0.0, 't_end': 2.0, 'points': 202, 'variables': 8305}, 'requested': {'solver': 'auto', 't_start': 0.0, 't_end': 2.0, 'dt': 0.01, 'rtol': 1e-06, 'atol': 1e-06}, 'timing': {'compile_seconds': None, 'simulate_seconds': None, 'compile_phase_seconds': {'prepare_context': None, 'build_snapshot': None, 'strict_compile': None, 'strict_resolve': None, 'instantiate': None, 'typecheck': None, 'flatten': None, 'todae': None}}}
+t=0.000 pz=0.0000 ramp.y=0.000 PID.y=0.000 w1=0.000 Q=[0.0000 0.0000 0.0000 1.0000]
+t=0.250 pz=-0.2601 ramp.y=2.500 PID.y=20.467 w1=3.056 Q=[0.0000 -0.0000 0.0019 1.0000]
+t=0.500 pz=-0.9349 ramp.y=5.000 PID.y=30.695 w1=4.593 Q=[0.0000 -0.0000 0.0060 1.0000]
+t=1.000 pz=-3.3497 ramp.y=5.000 PID.y=30.402 w1=4.551 Q=[0.0000 -0.0000 0.0142 0.9999]
+t=1.500 pz=-6.9707 ramp.y=5.000 PID.y=48.261 w1=7.229 Q=[0.0000 -0.0000 0.0266 0.9996]
+t=2.000 pz=-11.1067 ramp.y=5.000 PID.y=68.465 w1=10.260 Q=[0.0001 -0.0000 0.0451 0.9990]
+pz min -11.1067 max 0.0000, pz(t=2)=-11.1067

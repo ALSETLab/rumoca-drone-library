@@ -1,0 +1,55 @@
+{
+  "rumoca_version": "0.10.2",
+  "t_end_s": 4.0,
+  "rumoca_compile_s": 18.79,
+  "rumoca_simulate_s": 74.71,
+  "rumoca_points": 402,
+  "signals": {
+    "droneChassis1.bodyCylinder.frame_a.r_0[3]": {
+      "max_abs_diff": 0.00021560892250249708,
+      "range": 18.51083553082018,
+      "max_rel_to_range": 1.164771423437437e-05,
+      "rumoca_at_t_end": -16.710699148641837,
+      "om_at_t_end": -16.71055140029981
+    },
+    "PID.y": {
+      "max_abs_diff": 0.0006938544423178428,
+      "range": 136.7970062431232,
+      "max_rel_to_range": 5.072146396864024e-06,
+      "rumoca_at_t_end": 136.79767488168886,
+      "om_at_t_end": 136.7970062431232
+    },
+    "propellerRev.rotor3_1.revolute.w": {
+      "max_abs_diff": 0.00010615733285490592,
+      "range": 20.51666627858157,
+      "max_rel_to_range": 5.174199912084603e-06,
+      "rumoca_at_t_end": 20.516769767110127,
+      "om_at_t_end": 20.51666627858157
+    },
+    "ramp.y": {
+      "max_abs_diff": 8.881784197001252e-16,
+      "range": 5.0,
+      "max_rel_to_range": 1.7763568394002506e-16,
+      "rumoca_at_t_end": 5.0,
+      "om_at_t_end": 5.0
+    }
+  },
+  "z_at_1s": {
+    "rumoca": -3.349743548763749,
+    "om": -3.349743810313309
+  },
+  "z_at_2s": {
+    "rumoca": -11.106689108033335,
+    "om": -11.10659746492794
+  },
+  "z_at_3s": {
+    "rumoca": -17.6776949552767,
+    "om": -17.67751506633036
+  },
+  "z_at_4s": {
+    "rumoca": -16.710699148641837,
+    "om": -16.71055140029981
+  },
+  "om_z_min_m_over_10s": -18.51083553082018,
+  "om_z_max_m_over_10s": 70.68255587167377
+}

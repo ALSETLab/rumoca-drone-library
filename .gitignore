@@ -1,0 +1,10 @@
+msl/
+libroot/
+results/*.html
+check/om/*
+!check/om/*.mos
+!check/om/om_simpleHoverTest_res.csv
+!check/om/om_simpleHoverTest40_res.csv
+!check/om/om_run.log
+__pycache__/
+viewer/assets/

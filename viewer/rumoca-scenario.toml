@@ -1,0 +1,111 @@
+# ALSETLab DroneLibrary -- simpleHoverTest flown inside Rumoca's interactive viewer.
+# Run from this folder:  rumoca sim -c rumoca-scenario.toml   then open http://localhost:8090/
+# Paths below are RELATIVE to this file (Rumoca resolves scenario paths against the scenario folder).
+# Both repos are expected side by side under C:\GIT (rumoca-drone-library, rumoca-rocket-landing, Modelica-Drone-3D-FMI).
+
+# source_roots MUST be a top-level key (before the first [table]); inside [rumoca] it is silently ignored.
+# ONE root containing Modelica/, ModelicaServices/ and Complex/ side by side (MSL 4.0.0),
+# with Modelica.Math `external "builtin"` functions patched to algorithm bodies; both roots are built by ../tools/build_rumoca_roots.py (see README).
+source_roots = ["../msl/msl400_patched", "../libroot"]
+
+[rumoca]
+version = "1"
+task = "simulate"
+
+
+[model]
+file = "../libroot/DroneLibrary/Tests/simpleHoverTest.mo"
+name = "DroneLibrary.Tests.simpleHoverTest"
+
+[sim]
+dt = 0.01
+# 7613 equations / 239 scalar states: the native solver runs at 0.7-1.1x wall-clock time on a laptop,
+# so the run is paced in real time (it lags slightly when slower). T toggles fast pacing.
+mode = "realtime"
+solver = "auto"
+
+[transport.http]
+port = 8090
+scene = "drone_scene.js"
+asset_dir = "assets"
+
+[transport.websocket]
+port = 8091
+
+[input]
+mode = "keyboard"
+
+[input.keyboard.keys.r]
+action = "signal"
+signal = "reset"
+
+[input.keyboard.keys.q]
+action = "signal"
+signal = "quit"
+
+# Closed-loop test: no Modelica inputs to drive.
+
+[signals.viewer]
+# chassis position in the MultiBody world frame (Z up, world.n = {0,0,-1})
+px = "model:droneChassis1.bodyCylinder.frame_a.r_0[1]"
+py = "model:droneChassis1.bodyCylinder.frame_a.r_0[2]"
+pz = "model:droneChassis1.bodyCylinder.frame_a.r_0[3]"
+# MultiBody quaternion Q (Q[4] scalar, rotates world -> body). The viewer wants
+# body -> world, scalar first: q0 = Q[4], q1..q3 = -Q[1..3].
+q0 = { from = "model:droneChassis1.bodyCylinder.body.Q[4]", default = 1 }
+q1n = "model:droneChassis1.bodyCylinder.body.Q[1]"
+q2n = "model:droneChassis1.bodyCylinder.body.Q[2]"
+q3n = "model:droneChassis1.bodyCylinder.body.Q[3]"
+# rotor angular speeds (rad/s)
+omega_m1 = "model:propellerRev.rotor3_1.revolute.w"
+omega_m2 = "model:propellerRev1.rotor3_1.revolute.w"
+omega_m3 = "model:propellerRev2.rotor3_1.revolute.w"
+omega_m4 = "model:propellerRev3.rotor3_1.revolute.w"
+# altitude setpoint and PID output
+z_ref = "model:ramp.y"
+u_pid = "model:PID.y"
+t = "model:time"
+frame = "runtime:frame_num"
+wall_ms = "runtime:wall_ms"
+
+[viewer]
+mode = "results_panel"
+status_title = "ALSETLab DroneLibrary simpleHoverTest - Rumoca"
+
+[[viewer.frame]]
+name = "body"
+position = ["px", "py", "pz"]
+
+[viewer.hud]
+mode = "flight"
+frame = "body"
+altitude = "pz"
+
+[[viewer.controls.keyboard]]
+keys = "R"
+action = "Reset simulation"
+
+[[viewer.controls.keyboard]]
+keys = "T"
+action = "Toggle realtime pacing"
+
+[[viewer.controls.keyboard]]
+keys = "F"
+action = "Fullscreen"
+
+[[viewer.controls.keyboard]]
+keys = "C"
+action = "Cycle camera"
+
+[[viewer.controls.keyboard]]
+keys = "H"
+action = "Toggle HUD"
+
+[[viewer.controls.keyboard]]
+keys = "Q"
+action = "Quit"
+
+[reset]
+on_signal = "reset"
+reset_session = true
+reset_locals = true

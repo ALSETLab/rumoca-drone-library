@@ -1,0 +1,49 @@
+true
+""
+true
+"Notification: DroneLibrary requested package Modelica of version 4.0.0. Modelica 4.1.0 is used instead which states that it is fully compatible without conversion script needed.
+Notification: Skipped loading package Visualization (1.6) using MODELICAPATH C:/GIT/Modelica-Drone-3D-FMI/A_Modelica/;C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/ (uses-annotation may be wrong).
+Notification: You can install the requested package using one of the commands:
+  installPackage(Modelica_DeviceDrivers, \"2.2.0\", exactMatch=true)
+  installPackage(Modelica_DeviceDrivers, \"2.1.1\", exactMatch=false)
+  installPackage(Modelica_DeviceDrivers, \"2.1.1\", exactMatch=true).
+Notification: Skipped loading package Modelica_DeviceDrivers (2.1.1) using MODELICAPATH C:/GIT/Modelica-Drone-3D-FMI/A_Modelica/;C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/ (uses-annotation may be wrong).
+"
+record SimulationResult
+    resultFile = "C:/GIT/rumoca-drone-library/check/om/om_simpleHoverTest_res.csv",
+    simulationOptions = "startTime = 0.0, stopTime = 10.0, numberOfIntervals = 1000, tolerance = 1e-6, method = 'dassl', fileNamePrefix = 'om_simpleHoverTest', options = '', outputFormat = 'csv', variableFilter = 'time|droneChassis1.bodyCylinder.frame_a.r_0.*|PID.y|ramp.y|propellerRev.rotor3_1.revolute.w|propellerRev.dCMotor.dCmotor.w', cflags = '', simflags = ''",
+    messages = "LOG_STDOUT        | info    | Using sparse solver for linear system 1,
+|                 | |       | because density of 0.170 remains under threshold of 0.200.
+LOG_STDOUT        | info    | Using sparse solver for linear system 15,
+|                 | |       | because density of 0.170 remains under threshold of 0.200.
+LOG_STDOUT        | info    | Using sparse solver for linear system 41,
+|                 | |       | because density of 0.176 remains under threshold of 0.200.
+LOG_STDOUT        | info    | The maximum density for using sparse solvers can be specified
+|                 | |       | using the runtime flag '<-lssMaxDensity=value>'.
+LOG_SUCCESS       | info    | The initialization finished successfully without homotopy method.
+LOG_SUCCESS       | info    | The simulation finished successfully.
+",
+    timeFrontend = 0.4535745,
+    timeBackend = 7.1410387,
+    timeSimCode = 0.6003975,
+    timeTemplates = 0.5539529,
+    timeCompile = 3.5296378,
+    timeSimulation = 0.4810326,
+    timeTotal = 12.7600875
+end SimulationResult;
+[C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/Modelica 4.1.0+maint.om/Mechanics/MultiBody/Parts/BodyShape.mo:21:3-22:65:writable] Warning: Parameter propellerRev.blades.bodyShape5.r_CM has no value, and is fixed during initialization (fixed=true), using available start value (start={0, 0, 0}) as default value.
+[C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/Modelica 4.1.0+maint.om/Mechanics/MultiBody/Parts/BodyShape.mo:21:3-22:65:writable] Warning: Parameter propellerRev.blades.bodyShape4.r_CM has no value, and is fixed during initialization (fixed=true), using available start value (start={0, 0, 0}) as default value.
+[C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/Modelica 4.1.0+maint.om/Mechanics/MultiBody/Parts/BodyShape.mo:21:3-22:65:writable] Warning: Parameter propellerRev1.blades.bodyShape5.r_CM has no value, and is fixed during initialization (fixed=true), using available start value (start={0, 0, 0}) as default value.
+[C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/Modelica 4.1.0+maint.om/Mechanics/MultiBody/Parts/BodyShape.mo:21:3-22:65:writable] Warning: Parameter propellerRev1.blades.bodyShape4.r_CM has no value, and is fixed during initialization (fixed=true), using available start value (start={0, 0, 0}) as default value.
+[C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/Modelica 4.1.0+maint.om/Mechanics/MultiBody/Parts/BodyShape.mo:21:3-22:65:writable] Warning: Parameter propellerRev3.blades.bodyShape5.r_CM has no value, and is fixed during initialization (fixed=true), using available start value (start={0, 0, 0}) as default value.
+[C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/Modelica 4.1.0+maint.om/Mechanics/MultiBody/Parts/BodyShape.mo:21:3-22:65:writable] Warning: Parameter propellerRev3.blades.bodyShape4.r_CM has no value, and is fixed during initialization (fixed=true), using available start value (start={0, 0, 0}) as default value.
+[C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/Modelica 4.1.0+maint.om/Mechanics/MultiBody/Parts/BodyShape.mo:21:3-22:65:writable] Warning: Parameter propellerRev2.blades.bodyShape5.r_CM has no value, and is fixed during initialization (fixed=true), using available start value (start={0, 0, 0}) as default value.
+[C:/Users/vanfr/AppData/Roaming/.openmodelica/libraries/Modelica 4.1.0+maint.om/Mechanics/MultiBody/Parts/BodyShape.mo:21:3-22:65:writable] Warning: Parameter propellerRev2.blades.bodyShape4.r_CM has no value, and is fixed during initialization (fixed=true), using available start value (start={0, 0, 0}) as default value.
+Warning: The model contains alias variables with redundant start and/or conflicting nominal values. It is recommended to resolve the conflicts, because otherwise the system could be hard to solve. To print the conflicting alias sets and the chosen candidates please use -d=aliasConflicts.
+Warning: The initial conditions are not fully specified. For more information set -d=initialization. In OMEdit Tools->Options->Simulation->Show additional information from the initialization process, in OMNotebook call setCommandLineOptions("-d=initialization").
+
+
+
+real	0m15.366s
+user	0m0.000s
+sys	0m0.000s
