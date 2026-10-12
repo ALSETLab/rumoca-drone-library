@@ -52,7 +52,7 @@ live viewer showed 2202.3 m at 40.2 s.
 
 ### The hover test in Rumoca's 3-D viewer
 
-`viewer/rumoca-scenario.toml` and `viewer/drone_scene.js`, started with `viewer/run_viewer.sh`, then open
+`viewer/rumoca-scenario.toml` and `viewer/drone_scene.js`, started with `viewer/run_viewer.ps1` (PowerShell) or `viewer/run_viewer.sh` (Git Bash), then open
 <http://localhost:8090>. The quadrotor is drawn from simple Three.js geometry; its position and attitude come
 from the MultiBody quaternion of the chassis cylinder, and the four rotor discs spin with the simulated rotor
 speeds. Rumoca runs this model at 0.7 to 1.1 times real time on this laptop (the viewer's rate readout). Keys: R reset, T
@@ -87,13 +87,13 @@ With the same two work-arounds, 3 of 7 MultiBody models from the two ALSETLab li
   library's `Ramp` setpoint do not replay after a reset.
 - A live viewer run stops at t = 81 s with "algebraic projection did not converge at event boundary"
   (worst scaled residual ratio 1.000001, target `droneChassis1.bodyShape.frame_a.R.T[1,2]`); by then the
-  library's loop has diverged and the drone is above 2 km. Restart with `viewer/run_viewer.sh`.
+  library's loop has diverged and the drone is above 2 km. Restart with `viewer/run_viewer.ps1`.
 
 ## How to run
 
-```bash
-C:/GIT/rumoca-rocket-landing/.venv/Scripts/python.exe C:/GIT/rumoca-drone-library/tools/build_rumoca_roots.py
-bash C:/GIT/rumoca-drone-library/viewer/run_viewer.sh
+```powershell
+C:\GITumoca-rocket-landing\.venv\Scripts\python.exe C:\GITumoca-drone-library	oolsuild_rumoca_roots.py
+& C:\GITumoca-drone-libraryiewerun_viewer.ps1
 ```
 
 Open <http://localhost:8090> once the log prints "Ready" (compiling takes one to two minutes). The comparison:
