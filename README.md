@@ -92,8 +92,12 @@ With the same two work-arounds, 3 of 7 MultiBody models from the two ALSETLab li
 ## How to run
 
 ```powershell
-C:\GITumoca-rocket-landing\.venv\Scripts\python.exe C:\GITumoca-drone-library	oolsuild_rumoca_roots.py
-& C:\GITumoca-drone-libraryiewerun_viewer.ps1
+C:\GIT\rumoca-rocket-landing\.venv\Scripts\python.exe C:\GIT\rumoca-drone-library\tools\build_rumoca_roots.py
+& C:\GIT\rumoca-drone-library\viewer\run_viewer.ps1
+umoca-drone-library	oolsuild_rumoca_roots.py
+& C:\GIT
+umoca-drone-libraryiewer
+un_viewer.ps1
 ```
 
 Open <http://localhost:8090> once the log prints "Ready" (compiling takes one to two minutes). The comparison:
