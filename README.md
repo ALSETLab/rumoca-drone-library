@@ -85,6 +85,9 @@ With the same two work-arounds, 3 of 7 MultiBody models from the two ALSETLab li
   launch scripts run the CLI from that folder.
 - The viewer's reset (R) restores the states but not the model clock, so time-based sources such as the
   library's `Ramp` setpoint do not replay after a reset.
+- A live viewer run stops at t = 81 s with "algebraic projection did not converge at event boundary"
+  (worst scaled residual ratio 1.000001, target `droneChassis1.bodyShape.frame_a.R.T[1,2]`); by then the
+  library's loop has diverged and the drone is above 2 km. Restart with `viewer/run_viewer.sh`.
 
 ## How to run
 
