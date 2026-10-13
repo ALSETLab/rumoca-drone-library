@@ -1,19 +1,45 @@
-# ALSETLab DroneLibrary through Rumoca: a MultiBody quadrotor in Rumoca's 3-D viewer
+# Beyond DroneLibrary Multi-Domain Drone Modeling: Simulating and Flying a MultiBody Quadrotor in 3-D with Rumoca
 
-Second entry for the open challenge of the **Rumoca workshop at the American Modelica Conference 2026**
-(CogniPilot, Georgia Tech, 2026-10-12). The entry text and the 45-second pitch are in `ENTRY.md`. The first
-entry, the rocket landing, is in `C:\GIT\rumoca-rocket-landing`.
+Gallery project for the open challenge of the **Rumoca workshop at the American Modelica Conference 2026**
+(CogniPilot, Georgia Tech, 2026-10-12). Companion entry: the rocket landing,
+[ALSETLab/rumoca-rocket-landing](https://github.com/ALSETLab/rumoca-rocket-landing).
 
 **Question.** How far does Rumoca 0.10.2 get with a real `Modelica.Mechanics.MultiBody` quadrotor library,
 and can the library's own hover test fly in Rumoca's 3-D viewer instead of the licensed DLR Visualization
 library that the DroneLibrary normally uses?
 
-**Starting model.** `DroneLibrary.Tests.simpleHoverTest` from
-[ALSETLab/Modelica-Drone-3D-FMI](https://github.com/ALSETLab/Modelica-Drone-3D-FMI) (M. Podlaski,
-L. Vanfretti, D. Winkler, "DroneLibrary: Multi-Domain Drone Modeling in Modelica", 15th International Modelica
-Conference, 2023). A chassis of four MultiBody arms, a cylinder and a point mass; four propellers, each with a
-DC motor, a revolute rotor and blades; a ramp altitude setpoint of 5 m and one PID driving all motors. The
-library is used unmodified: no equation, parameter or connection was changed.
+## Background: the DroneLibrary and its papers
+
+- M. Podlaski, L. Vanfretti, H. Nademi and H. Chang, "UAV Dynamic System Modeling and Visualization using
+  Modelica and FMI," The Vertical Flight Society's 76th Annual Forum & Technology Display, Virginia Beach,
+  October 6-8, 2020.
+  [Publisher](https://vtol.org/store/product/uav-dynamics-and-electric-power-system-modeling-and-visualization-using-modelica-and-fmi-16289.cfm),
+  [author's copy](https://ecse.rpi.edu/~vanfrl/documents/publications/conference/2020/CP174_Drone_Modelica_and_FMI.pdf).
+- M. Podlaski, L. Vanfretti and D. Winkler, "DroneLibrary: Multi-Domain Drone Modeling in Modelica,"
+  Proceedings of the 15th International Modelica Conference, Aachen, October 9-11, 2023,
+  [doi:10.3384/ecp204551](https://doi.org/10.3384/ecp204551),
+  [author's copy](https://sites.ecse.rpi.edu/~vanfrl/documents/publications/conference/2023/CP238_Drone_Library_IMC_2023.pdf).
+- Models: [ALSETLab/Modelica-Drone-3D-FMI](https://github.com/ALSETLab/Modelica-Drone-3D-FMI).
+
+The DroneLibrary models a quadrotor across domains: a MultiBody airframe, DC motors, rotors and blades,
+power electronics and batteries, sensors, and continuous, discrete and synchronous controllers. The 2020
+paper covers its 3-D visualization and FMU export. The library's virtual-reality view uses the DLR
+Visualization library, which needs a commercial license.
+
+## What Rumoca adds
+
+| Topic | Papers (2020, 2023) | This project, with Rumoca 0.10.2 |
+|---|---|---|
+| Compiler | Dymola | Rumoca simulates the unmodified `Tests.simpleHoverTest` (7613 equations) and `Tests.motorTest` |
+| Cross-check | Dymola only | Rumoca agrees with OpenModelica to 0.22 mm in altitude over the first 4 s |
+| 3-D view | MultiBody animation in Dymola; VR with the DLR Visualization library (commercial license) | Rumoca's free, open-source Three.js viewer, live, from the MultiBody quaternion and rotor speeds |
+| Support status | n/a | 3 of 7 MultiBody models from two ALSETLab libraries simulate; blockers and work-arounds documented |
+| Rumoca bugs | n/a | Reset and re-initialization failure reported with a reproducer (see below) |
+
+**Starting model.** `DroneLibrary.Tests.simpleHoverTest`: a chassis of four MultiBody arms, a cylinder and
+a point mass; four propellers, each with a DC motor, a revolute rotor and blades; a ramp altitude setpoint of
+5 m and one PID driving all motors. The library is used unmodified: no equation, parameter or connection was
+changed.
 
 **Change.** Everything is outside the library:
 
@@ -55,14 +81,16 @@ live viewer showed 2202.3 m at 40.2 s.
 `viewer/rumoca-scenario.toml` and `viewer/drone_scene.js`, started with `viewer/run_viewer.ps1` (PowerShell) or `viewer/run_viewer.sh` (Git Bash), then open
 <http://localhost:8090>. The quadrotor is drawn from simple Three.js geometry; its position and attitude come
 from the MultiBody quaternion of the chassis cylinder, and the four rotor discs spin with the simulated rotor
-speeds. Rumoca runs this model at 0.7 to 1.1 times real time on this laptop (the viewer's rate readout). Keys: R reset, T
-real-time toggle, F fullscreen, C camera, H heads-up display, Q quit. Screenshots: `results/viewer_*.jpg`.
+speeds. Rumoca runs this model at 0.7 to 1.1 times real time on this laptop (the viewer's rate readout). Keys: T
+real-time toggle, F fullscreen, C camera, H heads-up display, Q quit. Do not press R: Rumoca's reset fails
+on this model and the viewer exits (see the reproducer below). Screenshots: `results/viewer_*.jpg`.
 
 ### MultiBody support matrix
 
 With the same two work-arounds, 3 of 7 MultiBody models from the two ALSETLab libraries simulate in Rumoca
 0.10.2; 6 of 7 compile. Full table with exact diagnostics:
-`C:\GIT\rumoca-rocket-landing\results\reference\multibody_support_matrix.md`.
+[multibody_support_matrix.md](https://github.com/ALSETLab/rumoca-rocket-landing/blob/master/results/reference/multibody_support_matrix.md)
+in the rocket repository.
 
 | Model | Equations | Compiles | Simulates | Blocker |
 |---|---|---|---|---|
@@ -80,14 +108,27 @@ With the same two work-arounds, 3 of 7 MultiBody models from the two ALSETLab li
   API loads the same model file from inside the tree.
 - The Windows release binary does not ship the viewer's browser bundle: the page says "Missing Rumoca viewer
   shell". It looks for `packages/rumoca-web/viz/viewer.html` and `packages/rumoca-web/vendor/three_viewer.js`
-  under the current folder. `C:\GIT\rumoca-web-assets` holds both: the page from the v0.10.2 source and the
+  under the current folder. A local `rumoca-web-assets` folder holds both (see the rocket repository's viewer README): the page from the v0.10.2 source and the
   bundle built with esbuild 0.28.1 from three 0.164.1, exactly as `packages/rumoca-web/build.mjs` does. The
   launch scripts run the CLI from that folder.
 - The viewer's reset (R) restores the states but not the model clock, so time-based sources such as the
   library's `Ramp` setpoint do not replay after a reset.
+- On this model the reset fails outright, and so does the start of a minimally changed variant; see the next section.
 - A live viewer run stops at t = 81 s with "algebraic projection did not converge at event boundary"
   (worst scaled residual ratio 1.000001, target `droneChassis1.bodyShape.frame_a.R.T[1,2]`); by then the
   library's loop has diverged and the drone is above 2 km. Restart with `viewer/run_viewer.ps1`.
+
+## Reproducer: reset and re-initialization failure
+
+`check/repro_reset/`. Two symptoms with the same error:
+
+1. In the viewer, pressing R on the running `simpleHoverTest` prints "reset: session reset failed ...
+   initial homotopy continuation failed at lambda=0 ... algebraic projection did not converge at event
+   boundary ... target=droneChassis1.bodyShape.frame_a.R.T[1,3]", and the viewer exits.
+2. `DroneHoverLoop.mo` re-assembles `simpleHoverTest` with identical components and connections, plus one
+   state `flight_time` (der = 1) that drives the 5 m ramp instead of `time`. It fails at session creation
+   with the same error, in both the CLI and the Python API (`check_loop_model.py`, log
+   `check_loop_model.log`), while `simpleHoverTest` itself initializes and runs.
 
 ## How to run
 

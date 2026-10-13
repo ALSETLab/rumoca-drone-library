@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\GIT\rumoca-drone-library\check\check_loop_model.py", line 14, in <module>
+    r = m.simulate(4.0, dt=0.01)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+rumoca.SimulationError: solve-IR evaluation failed: initial homotopy continuation failed at lambda=0.000000000 step=1.250e-1: solve-IR evaluation failed: algebraic projection did not converge at event boundary: worst scaled residual row=2178 target=droneChassis1.bodyShape.frame_a.R.T[1,3] value=-4.166877e0 ratio=4.166877e6 norm=4.166877e0 row_scale=1.000000e0 scaled_tolerance=1.000000e-6

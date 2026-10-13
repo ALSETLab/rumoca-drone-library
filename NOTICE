@@ -1,0 +1,5 @@
+Third-party portions:
+- The DroneLibrary models referenced and copied by tools/build_rumoca_roots.py come from
+  ALSETLab/Modelica-Drone-3D-FMI (https://github.com/ALSETLab/Modelica-Drone-3D-FMI), BSD 3-Clause.
+- check/repro_reset/DroneHoverLoop.mo re-assembles DroneLibrary.Tests.simpleHoverTest from that library.
+- The Modelica Standard Library copied and patched by tools/build_rumoca_roots.py is (c) Modelica Association, BSD 3-Clause.
