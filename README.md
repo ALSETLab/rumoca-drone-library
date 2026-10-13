@@ -34,7 +34,7 @@ Visualization library, which needs a commercial license.
 | Cross-check | Dymola only | Rumoca agrees with OpenModelica to 0.22 mm in altitude over the first 4 s |
 | 3-D view | MultiBody animation in Dymola; VR with the DLR Visualization library (commercial license) | Rumoca's free, open-source Three.js viewer, live, from the MultiBody quaternion and rotor speeds |
 | Support status | n/a | 3 of 7 MultiBody models from two ALSETLab libraries simulate; blockers and work-arounds documented |
-| Rumoca bugs | n/a | Reset and re-initialization failure reported with a reproducer (see below) |
+| Rumoca bugs | n/a | Reset and re-initialization failure reported with a reproducer, [CogniPilot/rumoca#430](https://github.com/CogniPilot/rumoca/issues/430) |
 
 **Starting model.** `DroneLibrary.Tests.simpleHoverTest`: a chassis of four MultiBody arms, a cylinder and
 a point mass; four propellers, each with a DC motor, a revolute rotor and blades; a ramp altitude setpoint of
@@ -119,6 +119,8 @@ in the rocket repository.
   library's loop has diverged and the drone is above 2 km. Restart with `viewer/run_viewer.ps1`.
 
 ## Reproducer: reset and re-initialization failure
+
+Reported as [CogniPilot/rumoca#430](https://github.com/CogniPilot/rumoca/issues/430).
 
 `check/repro_reset/`. Two symptoms with the same error:
 

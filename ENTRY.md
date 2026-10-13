@@ -21,7 +21,7 @@ I used `DroneLibrary.Tests.simpleHoverTest` unmodified: four MultiBody arms, fou
 - **Before:** every MultiBody model compiled in Rumoca, but none simulated. **After:** the library's motor test and full hover test simulate, and the hover test flies live in Rumoca's free 3-D viewer at 0.7 to 1.1 times real time.
 - **Check:** Rumoca and OpenModelica agree on the unmodified hover test to 0.22 mm in altitude over an 18.5 m swing in the first 4 s, and to 7e-4 on the PID output. Both reproduce the test's poorly damped loop: the 50 kg chassis sinks 18.5 m, overshoots to 70.7 m, then diverges. After 40 s OpenModelica is at 2202.0 m; Rumoca's live viewer showed 2202.3 m.
 - **Support status:** 3 of 7 MultiBody models from two ALSETLab libraries simulate; the blockers are documented.
-- **For the Rumoca team:** resetting this model fails with an initialization error, and so does a minimal variant with one extra state. I reported it with a reproducer: ISSUE_LINK.
+- **For the Rumoca team:** resetting this model fails with an initialization error, and so does a minimal variant with one extra state. I reported it with a reproducer: [CogniPilot/rumoca#430](https://github.com/CogniPilot/rumoca/issues/430).
 
 **Tool and time.** Claude Code (Claude Fable 5.1, then Claude Opus 5.5), Rumoca 0.10.2, OpenModelica 1.27. About 1 h 30 min wall time including debugging, plus the write-up.
 
