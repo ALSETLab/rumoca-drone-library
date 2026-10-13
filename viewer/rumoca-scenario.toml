@@ -35,10 +35,7 @@ port = 8091
 [input]
 mode = "keyboard"
 
-[input.keyboard.keys.r]
-action = "signal"
-signal = "reset"
-
+# No R/reset key: Rumoca 0.10.2 reset fails on this model and ends the viewer (CogniPilot/rumoca#430).
 [input.keyboard.keys.q]
 action = "signal"
 signal = "quit"
@@ -80,10 +77,6 @@ position = ["px", "py", "pz"]
 mode = "flight"
 frame = "body"
 altitude = "pz"
-
-[[viewer.controls.keyboard]]
-keys = "R"
-action = "Reset simulation"
 
 [[viewer.controls.keyboard]]
 keys = "T"

@@ -4,7 +4,59 @@
 
 function num(v, d) { const n = Number(v); return Number.isFinite(n) ? n : d; }
 
-ctx.onInit = function (api) {
+
+// ---- on-screen controls, status line and replay mode ---------------------------------------------
+// Live mode (rumoca-scenario.toml): the pose comes from Rumoca's running simulation of the unmodified
+// DroneLibrary.Tests.simpleHoverTest. Only a Camera button is offered: Rumoca 0.10.2's reset fails on this
+// model and ends the viewer (CogniPilot/rumoca#430), so there is no "fly again" here.
+// Replay mode (rumoca-scenario.replay.toml): the tiny DroneReplay model only provides a looping replay clock
+// (t_replay); this scene plays back replay/hover_replay.json, a recorded Rumoca run of the same test.
+function pressKey(code, key) {
+  document.dispatchEvent(new KeyboardEvent("keydown", { code, key, bubbles: true }));
+  setTimeout(() => document.dispatchEvent(new KeyboardEvent("keyup", { code, key, bubbles: true })), 120);
+}
+function makeButton(box, label, code, key, color) {
+  const b = document.createElement("button");
+  b.textContent = label;
+  b.style.cssText = "padding:9px 16px;border:0;border-radius:8px;cursor:pointer;font:600 14px system-ui,sans-serif;" +
+    "color:#fff;background:" + color + ";box-shadow:0 2px 6px rgba(0,0,0,.35);";
+  b.addEventListener("click", () => { pressKey(code, key); b.blur(); });
+  box.appendChild(b);
+  return b;
+}
+function makeControls(replay) {
+  const box = document.createElement("div");
+  box.style.cssText = "position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;display:flex;gap:10px;";
+  if (replay) makeButton(box, "Replay from the start  (R)", "KeyR", "r", "#007c91");
+  makeButton(box, "Camera  (C)", "KeyC", "c", "#6b5b95");
+  const status = document.createElement("div");
+  status.style.cssText = "position:fixed;left:50%;bottom:66px;transform:translateX(-50%);z-index:50;white-space:nowrap;" +
+    "padding:6px 14px;border-radius:8px;background:rgba(20,24,28,.72);color:#e8f1f2;font:600 14px system-ui,sans-serif;";
+  const banner = document.createElement("div");
+  banner.style.cssText = "position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:50;white-space:nowrap;" +
+    "padding:7px 16px;border-radius:8px;font:700 14px system-ui,sans-serif;color:#fff;" +
+    (replay ? "background:rgba(214,90,49,.92);" : "background:rgba(76,149,108,.92);");
+  banner.textContent = replay
+    ? "REPLAY of a recorded Rumoca 0.10.2 simulation of DroneLibrary.Tests.simpleHoverTest (not live)"
+    : "LIVE: Rumoca 0.10.2 is simulating DroneLibrary.Tests.simpleHoverTest (unmodified, 7613 equations)";
+  document.body.appendChild(banner);
+  document.body.appendChild(status);
+  document.body.appendChild(box);
+  return { status };
+}
+function replayGetter(rec, tq) {
+  const t = rec.t, n = t.length;
+  const x = Math.min(Math.max(tq, t[0]), t[n - 1]);
+  let i = Math.min(Math.floor((x - t[0]) / rec.dt), n - 2);
+  const w = (x - t[i]) / (t[i + 1] - t[i]);
+  return (name) => {
+    if (name === "t") return x;
+    const v = rec.signals[name];
+    return v ? v[i] + w * (v[i + 1] - v[i]) : undefined;
+  };
+}
+
+ctx.onInit = async function (api) {
   const THREE = api.THREE;
   const scene = api.scene;
   const s = api.state;
@@ -102,11 +154,18 @@ ctx.onInit = function (api) {
   scene.add(s.shadow);
 
   if (api.cam) { api.cam.dist = 6; api.cam.elev = 0.35; api.cam.angle = -Math.PI / 2 + 0.6; }
+  s.replayMode = (typeof REPLAY_MODE !== 'undefined') && REPLAY_MODE;
+  if (s.replayMode) {
+    const res = await fetch('/assets/hover_replay.json');
+    s.rec = await res.json();
+  }
+  s.ui = makeControls(s.replayMode);
 };
 
 ctx.onFrame = function (api) {
   const s = api.state;
-  const get = api.get;
+  const tRep = s.replayMode ? Number(api.get('t_replay')) || 0 : 0;
+  const get = (s.replayMode && s.rec) ? replayGetter(s.rec, tRep) : api.get;
   const px = num(get("px"), 0), py = num(get("py"), 0), pz = num(get("pz"), 0);
   // MultiBody Q rotates world->body with Q[4] scalar; viewer wants body->world scalar-first.
   const q0 = num(get("q0"), 1);
@@ -140,6 +199,21 @@ ctx.onFrame = function (api) {
     s.pole.scale.y = Math.max(Math.abs(zr), 0.01);
     s.pole.position.set(0, zr / 2, 0);
   } else { s.target.visible = false; s.pole.visible = false; }
+
+
+  // ---- status line ----
+  if (s.ui) {
+    const w = Math.abs(num(get("omega_m1"), 0));
+    const line = "altitude " + pz.toFixed(1) + " m (set-point " + num(get("z_ref"), 0).toFixed(1) +
+      " m),  rotor " + w.toFixed(1) + " rad/s,  PID " + num(get("u_pid"), 0).toFixed(1);
+    if (s.replayMode) {
+      const loops = Math.round(num(api.get("loops"), 1));
+      s.ui.status.textContent = "Replay " + loops + ":  t = " + num(get("t"), 0).toFixed(1) + " of " +
+        (s.rec ? s.rec.t_end : 10) + " s,  " + line + "  -  loops automatically";
+    } else {
+      s.ui.status.textContent = "t = " + num(get("t"), 0).toFixed(1) + " s,  " + line;
+    }
+  }
 
   // shadow on the ground
   s.shadow.position.set(tx, 0.004, tz);

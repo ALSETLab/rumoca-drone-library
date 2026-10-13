@@ -1,0 +1,66 @@
+# REPLAY of a recorded Rumoca run of DroneLibrary.Tests.simpleHoverTest, looping in Rumoca's viewer.
+# The model below is only a replay clock; drone_replay_scene.js plays back replay/hover_replay.json
+# (written by ../check/record_replay.py from Rumoca's native simulation). Open http://localhost:8092
+[rumoca]
+version = "1"
+task = "simulate"
+
+[model]
+file = "DroneReplay.mo"
+name = "DroneReplay"
+
+[sim]
+dt = 0.01
+mode = "realtime"
+solver = "rk-like"
+
+[transport.http]
+port = 8092
+scene = "drone_replay_scene.js"
+asset_dir = "replay"
+
+[transport.websocket]
+port = 8093
+
+[input]
+mode = "keyboard"
+
+[input.keyboard.keys.r]
+action = "signal"
+signal = "reset"
+
+[input.keyboard.keys.q]
+action = "signal"
+signal = "quit"
+
+[signals.viewer]
+t_replay = "model:t_replay"
+loops = "model:loops"
+t = "model:time"
+frame = "runtime:frame_num"
+wall_ms = "runtime:wall_ms"
+
+[viewer]
+mode = "results_panel"
+status_title = "REPLAY - DroneLibrary simpleHoverTest recorded with Rumoca"
+
+[[viewer.controls.keyboard]]
+keys = "R"
+action = "Replay from the start"
+
+[[viewer.controls.keyboard]]
+keys = "C"
+action = "Cycle camera"
+
+[[viewer.controls.keyboard]]
+keys = "T"
+action = "Toggle realtime pacing"
+
+[[viewer.controls.keyboard]]
+keys = "Q"
+action = "Quit"
+
+[reset]
+on_signal = "reset"
+reset_session = true
+reset_locals = true

@@ -76,14 +76,30 @@ chassis first sinks to 18.5 m below its start while the PID winds up, then overs
 (OpenModelica, 10 s run), and the loop then diverges. Over 40 s OpenModelica ends at 2202.0 m; Rumoca's
 live viewer showed 2202.3 m at 40.2 s.
 
-### The hover test in Rumoca's 3-D viewer
+### The hover test in Rumoca's 3-D viewer: live and replay
 
-`viewer/rumoca-scenario.toml` and `viewer/drone_scene.js`, started with `viewer/run_viewer.ps1` (PowerShell) or `viewer/run_viewer.sh` (Git Bash), then open
-<http://localhost:8090>. The quadrotor is drawn from simple Three.js geometry; its position and attitude come
-from the MultiBody quaternion of the chassis cylinder, and the four rotor discs spin with the simulated rotor
-speeds. Rumoca runs this model at 0.7 to 1.1 times real time on this laptop (the viewer's rate readout). Keys: T
-real-time toggle, F fullscreen, C camera, H heads-up display, Q quit. Do not press R: Rumoca's reset fails
-on this model and the viewer exits (see the reproducer below). Screenshots: `results/viewer_*.jpg`.
+Two ways to watch it, both in Rumoca's own viewer (PowerShell; the browser opens by itself once the viewer
+is up):
+
+| Mode | Start | What runs | Controls |
+|---|---|---|---|
+| **Live** (http://localhost:8090) | `& C:\GIT\rumoca-drone-library\viewer\run_viewer.ps1` | Rumoca simulates the unmodified `simpleHoverTest` (7613 equations) at 0.7 to 1.1 times real time; compiling takes one to two minutes | Camera button (C), T real-time toggle, F fullscreen, H heads-up display, Q quit |
+| **Replay** (http://localhost:8092) | `& C:\GIT\rumoca-drone-library\viewer\run_replay.ps1` | Plays back a recorded 10 s Rumoca run of the same test, looping; starts in seconds | Replay from the start (R), Camera (C), T, Q |
+
+Both pages show a banner, LIVE or REPLAY, and a status line with time, altitude, set-point, rotor speed and
+PID output. The quadrotor is drawn from simple Three.js geometry; its position and attitude come from the
+MultiBody quaternion of the chassis cylinder, and the four rotor discs spin with the rotor speeds.
+
+The live mode has no "fly again" or loop: Rumoca 0.10.2's reset fails on this model and ends the viewer
+([CogniPilot/rumoca#430](https://github.com/CogniPilot/rumoca/issues/430)). It also stops by itself at
+t = 81 s, after the test's PID loop has diverged.
+
+The replay exists for that reason. `check/record_replay.py` records Rumoca's native simulation of the
+unmodified test (10 s, every 0.02 s, about 100 s of computing) into `viewer/replay/hover_replay.json`.
+`viewer/DroneReplay.mo` is only a replay clock that loops from 0 to 10 s. `viewer/drone_replay_scene.js`
+interpolates the recording at that clock; it is generated from `drone_scene.js` by
+`tools/make_replay_scene.py`. Nothing physical is simulated live in replay mode, and the page says so.
+Screenshots: `results/viewer_live_controls.jpg` and `results/viewer_replay.jpg`.
 
 ### MultiBody support matrix
 
