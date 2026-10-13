@@ -170,3 +170,5 @@ DroneLibrary: M. Podlaski, H. Chang, L. Vanfretti (RPI) and D. Winkler (USN), BS
 Standard Library: Modelica Association, BSD 3-Clause. Viewer page and build recipe: Rumoca (CogniPilot,
 Apache-2.0). Tools: Rumoca 0.10.2, OpenModelica 1.27. Agent: Claude Code with Claude Fable 5.1 and, after
 11:30 EDT, Claude Opus 5.5.
+
+Lessons learned across both Rumoca projects: `LESSONS_LEARNED.md`.
