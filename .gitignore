@@ -8,3 +8,4 @@ check/om/*
 !check/om/om_run.log
 __pycache__/
 viewer/assets/
+.venv/

@@ -9,11 +9,11 @@
      b. Modelica.Math.{sin,cos,tan,asin,acos,atan,atan2,sinh,cosh,tanh,exp,log,log10,sqrt}:
         body 'external "builtin" y = f(u);' -> 'algorithm y := .f(u);'
         (the 0.10.2 runtime cannot execute external builtins; the leading dot calls Modelica's builtin).
-2. libroot/DroneLibrary/  Copy of C:/GIT/Modelica-Drone-3D-FMI/A_Modelica/DroneLibrary (without Resources/),
+2. libroot/DroneLibrary/  Copy of external/Modelica-Drone-3D-FMI/A_Modelica/DroneLibrary (git submodule; without Resources/),
    plus an empty package.mo in the three folders that lack one (Electrical/Sources/FuelCell,
    Examples/PowerSystem, Visualize/Runs); Rumoca rejects such a tree as a source root (PKG-006).
 
-Run:  C:/GIT/rumoca-rocket-landing/.venv/Scripts/python.exe C:/GIT/rumoca-drone-library/tools/build_rumoca_roots.py
+Run (from the repository root):  .venv/Scripts/python.exe tools/build_rumoca_roots.py   (setup.ps1 does this)
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parents[1]
 OM_LIBS = Path(os.environ["APPDATA"]) / ".openmodelica" / "libraries"
-DRONE_SRC = Path(r"C:\GIT\Modelica-Drone-3D-FMI\A_Modelica\DroneLibrary")
+DRONE_SRC = HERE / "external" / "Modelica-Drone-3D-FMI" / "A_Modelica" / "DroneLibrary"
 FUNCS = ["sin", "cos", "tan", "asin", "acos", "atan", "atan2", "sinh", "cosh", "tanh", "exp", "log", "log10", "sqrt"]
 MISSING_PACKAGES = {
     "Electrical/Sources/FuelCell": ("DroneLibrary.Electrical.Sources", "FuelCell"),

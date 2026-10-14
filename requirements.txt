@@ -1,0 +1,4 @@
+# Pinned to the AMC 2026 Rumoca workshop environment (rumoca_workshop_amc2026/pyproject.toml)
+rumoca==0.10.2
+numpy==2.2.6
+matplotlib==3.10.3

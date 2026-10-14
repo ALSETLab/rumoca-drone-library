@@ -83,8 +83,8 @@ is up):
 
 | Mode | Start | What runs | Controls |
 |---|---|---|---|
-| **Live** (http://localhost:8090) | `& C:\GIT\rumoca-drone-library\viewer\run_viewer.ps1` | Rumoca simulates the unmodified `simpleHoverTest` (7613 equations) at 0.7 to 1.1 times real time; compiling takes one to two minutes | Camera button (C), T real-time toggle, F fullscreen, H heads-up display, Q quit |
-| **Replay** (http://localhost:8092) | `& C:\GIT\rumoca-drone-library\viewer\run_replay.ps1` | Plays back a recorded 10 s Rumoca run of the same test, looping; starts in seconds | Replay from the start (R), Camera (C), T, Q |
+| **Live** (http://localhost:8090) | `.\viewer\run_viewer.ps1` | Rumoca simulates the unmodified `simpleHoverTest` (7613 equations) at 0.7 to 1.1 times real time; compiling takes one to two minutes | Camera button (C), T real-time toggle, F fullscreen, H heads-up display, Q quit |
+| **Replay** (http://localhost:8092) | `.\viewer\run_replay.ps1` | Plays back a recorded 10 s Rumoca run of the same test, looping; starts in seconds | Replay from the start (R), Camera (C), T, Q |
 
 Both pages show a banner, LIVE or REPLAY, and a status line with time, altitude, set-point, rotor speed and
 PID output. The quadrotor is drawn from simple Three.js geometry; its position and attitude come from the
@@ -124,9 +124,9 @@ in the rocket repository.
   API loads the same model file from inside the tree.
 - The Windows release binary does not ship the viewer's browser bundle: the page says "Missing Rumoca viewer
   shell". It looks for `packages/rumoca-web/viz/viewer.html` and `packages/rumoca-web/vendor/three_viewer.js`
-  under the current folder. A local `rumoca-web-assets` folder holds both (see the rocket repository's viewer README): the page from the v0.10.2 source and the
+  under the current folder. The `external/rumoca-web-assets` submodule ([ALSETLab/rumoca-web-assets](https://github.com/ALSETLab/rumoca-web-assets)) holds both: the page from the v0.10.2 source and the
   bundle built with esbuild 0.28.1 from three 0.164.1, exactly as `packages/rumoca-web/build.mjs` does. The
-  launch scripts run the CLI from that folder.
+  launch scripts run the CLI from that folder, which also downloads `rumoca.exe` on first use.
 - The viewer's reset (R) restores the states but not the model clock, so time-based sources such as the
   library's `Ramp` setpoint do not replay after a reset.
 - On this model the reset fails outright, and so does the start of a minimally changed variant; see the next section.
@@ -150,20 +150,30 @@ Reported as [CogniPilot/rumoca#430](https://github.com/CogniPilot/rumoca/issues/
 
 ## How to run
 
+Clone with the submodules: `external/Modelica-Drone-3D-FMI` (the original ALSETLab DroneLibrary) and
+`external/rumoca-web-assets` ([ALSETLab/rumoca-web-assets](https://github.com/ALSETLab/rumoca-web-assets), the
+viewer kit the Rumoca 0.10.2 Windows release binary needs). Prerequisites: Python 3.12 (`py -3.12` or
+`python`) and OpenModelica 1.27 with the Modelica Standard Library 4.0.0 (the source of the patched MSL root).
+
 ```powershell
-C:\GIT\rumoca-rocket-landing\.venv\Scripts\python.exe C:\GIT\rumoca-drone-library\tools\build_rumoca_roots.py
-& C:\GIT\rumoca-drone-library\viewer\run_viewer.ps1
+git clone --recurse-submodules https://github.com/ALSETLab/rumoca-drone-library.git
+cd rumoca-drone-library
+.\setup.ps1
+.\viewer\run_replay.ps1
+.\viewer\run_viewer.ps1
 ```
 
-Open <http://localhost:8090> once the log prints "Ready" (compiling takes one to two minutes). The comparison:
+`setup.ps1` initializes the submodules, creates `.venv`, builds the source roots `msl/` and `libroot/`
+(`tools/build_rumoca_roots.py`) and downloads the Rumoca CLI into the viewer kit, checking its SHA-256. The
+live viewer opens <http://localhost:8090> once compiling is done (one to two minutes). The comparison with
+OpenModelica, from the repository root:
 
-```bash
-cd C:/GIT/rumoca-drone-library/check && C:/GIT/rumoca-rocket-landing/.venv/Scripts/python.exe compare_om.py
+```powershell
+.venv\Scripts\python.exe check\compare_om.py
 ```
 
-It needs the OpenModelica result `check/om/om_simpleHoverTest_res.csv`, produced by
+It needs the OpenModelica result `check/om/om_simpleHoverTest_res.csv` (tracked), produced by
 `omc om_simpleHoverTest.mos` in `check/om` (OpenModelica 1.27).
-
 ## Credits
 
 DroneLibrary: M. Podlaski, H. Chang, L. Vanfretti (RPI) and D. Winkler (USN), BSD 3-Clause. Modelica

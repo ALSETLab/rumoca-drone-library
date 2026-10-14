@@ -9,8 +9,8 @@ import numpy as np
 import rumoca as rum
 
 HERE = Path(__file__).resolve().parent
-ROOT_MSL = r"C:\GIT\rumoca-rocket-landing\results\scratch\msl400_triage_A"
-MODEL_FILE = r"C:\GIT\rumoca-drone-library\libroot\DroneLibrary\Tests\simpleHoverTest.mo"
+ROOT_MSL = str(HERE.parent / "msl" / "msl400_patched")  # built by tools/build_rumoca_roots.py
+MODEL_FILE = str(HERE.parent / "libroot" / "DroneLibrary" / "Tests" / "simpleHoverTest.mo")
 T_END = 4.0
 Z = "droneChassis1.bodyCylinder.frame_a.r_0[3]"
 SIG = [Z, "PID.y", "propellerRev.rotor3_1.revolute.w", "ramp.y"]

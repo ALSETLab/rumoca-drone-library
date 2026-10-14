@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
-# Start the Rumoca 3-D viewer for DroneLibrary.Tests.simpleHoverTest, then open http://localhost:8090
-# Run from C:/GIT/rumoca-web-assets so the release binary finds packages/rumoca-web (viewer page + Three.js bundle).
-cd C:/GIT/rumoca-web-assets && exec C:/GIT/rumoca-web-assets/bin/rumoca.exe sim -c C:/GIT/rumoca-drone-library/viewer/rumoca-scenario.toml
+# Start the Rumoca 3-D viewer, LIVE simulation of DroneLibrary.Tests.simpleHoverTest (Git Bash): http://localhost:8090
+# Rumoca 0.10.2 (Windows release binary) looks for its browser bundle (packages/rumoca-web) under the CURRENT
+# folder, so run from the external/rumoca-web-assets submodule (fetch bin/rumoca.exe with its get_rumoca.ps1).
+here="$(cd "$(dirname "$0")" && pwd)"
+kit="$here/../external/rumoca-web-assets"
+cd "$kit" && exec ./bin/rumoca.exe sim -c "$here/rumoca-scenario.toml"

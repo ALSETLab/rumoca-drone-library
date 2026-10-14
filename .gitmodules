@@ -1,0 +1,6 @@
+[submodule "external/Modelica-Drone-3D-FMI"]
+	path = external/Modelica-Drone-3D-FMI
+	url = https://github.com/ALSETLab/Modelica-Drone-3D-FMI.git
+[submodule "external/rumoca-web-assets"]
+	path = external/rumoca-web-assets
+	url = https://github.com/ALSETLab/rumoca-web-assets.git

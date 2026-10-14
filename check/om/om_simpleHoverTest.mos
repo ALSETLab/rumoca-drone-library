@@ -1,5 +1,5 @@
 loadModel(Modelica, {"4.0.0"}); getErrorString();
-loadFile("C:/GIT/Modelica-Drone-3D-FMI/A_Modelica/DroneLibrary/package.mo"); getErrorString();
+loadFile("../../external/Modelica-Drone-3D-FMI/A_Modelica/DroneLibrary/package.mo"); getErrorString();
 res := simulate(DroneLibrary.Tests.simpleHoverTest, stopTime=10.0, numberOfIntervals=1000, tolerance=1e-6, method="dassl", outputFormat="csv", variableFilter="time|droneChassis1.bodyCylinder.frame_a.r_0.*|PID.y|ramp.y|propellerRev.rotor3_1.revolute.w|propellerRev.dCMotor.dCmotor.w", fileNamePrefix="om_simpleHoverTest");
 print(getErrorString());
 print(res.messages);

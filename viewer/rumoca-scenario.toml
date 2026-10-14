@@ -1,7 +1,7 @@
 # ALSETLab DroneLibrary -- simpleHoverTest flown inside Rumoca's interactive viewer.
 # Run from this folder:  rumoca sim -c rumoca-scenario.toml   then open http://localhost:8090/
 # Paths below are RELATIVE to this file (Rumoca resolves scenario paths against the scenario folder).
-# Both repos are expected side by side under C:\GIT (rumoca-drone-library, rumoca-rocket-landing, Modelica-Drone-3D-FMI).
+# The roots are built from the external/Modelica-Drone-3D-FMI submodule and OpenModelica's MSL by ../setup.ps1.
 
 # source_roots MUST be a top-level key (before the first [table]); inside [rumoca] it is silently ignored.
 # ONE root containing Modelica/, ModelicaServices/ and Complex/ side by side (MSL 4.0.0),
